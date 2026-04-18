@@ -9,11 +9,28 @@ You can also include images in this folder and reference them in the markdown. E
 
 ## How it works
 
-Explain how your project works
+The top module (axi4lite_top) instantiates:
+An AXI4-Lite Master
+An AXI4-Lite Slave
+Instead of requiring the user to control all AXI signals, the top module provides a simplified interface:
+ui_in[0] → Start Write
+ui_in[2:1] → Write Address
+uio_in → Write Data
+ui_in[4] → Start Read
+ui_in[3:2] → Read Address
+When a transaction is started:
+The master drives the appropriate AXI4-Lite signals.
+The slave responds according to AXI protocol.
+When the transaction finishes, uo_out[0] goes high (Done).
+On reads, the data is returned via uio_out.
+Effectively, this module hides AXI4-Lite complexity and lets the user test simple memory-mapped transactions.
 
 ## How to test
 
-Explain how to use your project
+Verilog Testbench
+Located at sim/axi4lite_tb.v.
+Runs a reset → write → read → check sequence.
+Displays results in the simulator console.
 
 ## External hardware
 
